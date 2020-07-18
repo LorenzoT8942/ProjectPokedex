@@ -16,21 +16,18 @@ public class Pokemon {
     @ColumnInfo(name = "Name")
     private String pkmnName;
 
-    @ColumnInfo(name = "Type 1")
+    @ColumnInfo(name = "Type1")
     private String type1;
 
-    @ColumnInfo(name = "Type 2")
+    @ColumnInfo(name = "Type2")
     private String type2;
 
-    @ColumnInfo(name = "Image")
-    private String imageUrl;
 
-    public Pokemon(@NonNull String pkmnNum, String pkmnName, String type1, String type2, String imageUrl) {
+    public Pokemon(@NonNull String pkmnNum, String pkmnName, String type1, String type2) {
         this.pkmnNum = pkmnNum;
         this.pkmnName = pkmnName;
         this.type1 = type1;
         this.type2 = type2;
-        this.imageUrl = imageUrl;
     }
 
     @NonNull
@@ -64,14 +61,6 @@ public class Pokemon {
 
     public void setType2(String type2) {
         this.type2 = type2;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
     }
 }
 

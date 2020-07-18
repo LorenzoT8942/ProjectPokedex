@@ -24,7 +24,7 @@ public class MainViewModel extends AndroidViewModel {
         searchResults = repository.getSearchResults();
     }
 
-     MutableLiveData<List<Pokemon>> getSearchResults(){
+    MutableLiveData<List<Pokemon>> getSearchResults(){
         return repository.getSearchResults();
     }
 

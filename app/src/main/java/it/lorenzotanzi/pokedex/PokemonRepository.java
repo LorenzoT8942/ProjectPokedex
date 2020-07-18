@@ -1,20 +1,34 @@
 package it.lorenzotanzi.pokedex;
 
 import android.app.Application;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.widget.ImageView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.IdentityHashMap;
 import java.util.List;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import static it.lorenzotanzi.pokedex.R.*;
+import static it.lorenzotanzi.pokedex.R.integer.*;
 
 class PokemonRepository implements Response.Listener, Response.ErrorListener {
 
@@ -31,9 +45,8 @@ class PokemonRepository implements Response.Listener, Response.ErrorListener {
         pokemonDao = db.pokemonDao();
         allPokemons = pokemonDao.getAllPokemons();
         if (allPokemons == null){
-            //fetch data from API and insert in DB
+            searchAllPokemons();
         }
-
         requestQueue = Volley.newRequestQueue(application);
     }
 
@@ -106,20 +119,49 @@ class PokemonRepository implements Response.Listener, Response.ErrorListener {
         }
     }
 
-    private void apiCall (String url){
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, this, this);
-        requestQueue.add(stringRequest);
+    private void imgCall(String url){
+        //TO DO
     }
 
-    private void getPokemonById (String id){
+    private void searchPokemonById (String id){
         String url = "https://pokeapi.co/api/v2/pokemon/%s/";
         String.format(url, id);
-        apiCall(url);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Gson gson = new Gson();
+                        String pokemonJson;
+                        try {
+                            JSONObject jsonObject =  new JSONObject(response);
+                            pokemonJson = jsonObject.toString();
+                            String  newPkmnId = (String) jsonObject.getString("id");
+                            String newPkmnName = (String) jsonObject.get("name").toString();
+                            JSONArray newPkmnTypes = jsonObject.getJSONArray("types");
+                            String Type1 = newPkmnTypes.getString(0);
+                            String Type2;
+                            if (newPkmnTypes.isNull(1)){
+                                Type2 = null;
+                            } else {
+                                Type2 = newPkmnTypes.getString(1);
+                            }
+                            Pokemon pokemon = new Pokemon(newPkmnId, newPkmnName, Type1, Type2);
+                            pokemonDao.insertPokemon(pokemon);
+                        }catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                });
     }
 
     private void searchAllPokemons(){
-
-
+        for (int i = 1; max_pokemons >= i; i++) searchPokemonById(Integer.toString(i));
     }
 
 }
