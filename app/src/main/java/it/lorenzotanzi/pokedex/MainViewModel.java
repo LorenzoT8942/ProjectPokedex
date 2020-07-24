@@ -1,6 +1,7 @@
 package it.lorenzotanzi.pokedex;
 
 import android.app.Application;
+import android.util.Log;
 
 import java.lang.invoke.MutableCallSite;
 import java.util.List;
@@ -9,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 public class MainViewModel extends AndroidViewModel {
 
@@ -17,18 +19,26 @@ public class MainViewModel extends AndroidViewModel {
     private MutableLiveData<List<Pokemon>>  searchResults;
 
 
-    public MainViewModel(@NonNull Application application) {
+    public MainViewModel(Application application) {
         super(application);
+        Log.d("VM", "CONTRUCTING VIEW MODEL CLASS");
         repository = new PokemonRepository(application);
+        Log.d("VM", "repo obtained");
         allPokemons = repository.getAllPokemons();
+        Log.d("VM", "Pokemon list obtained");
         searchResults = repository.getSearchResults();
+        Log.d("VM", "searchResults requested");
+
     }
 
-    MutableLiveData<List<Pokemon>> getSearchResults(){
+
+
+
+    public MutableLiveData<List<Pokemon>> getSearchResults(){
         return repository.getSearchResults();
     }
 
-    LiveData<List<Pokemon>> getAllPokemons(){
+    public LiveData<List<Pokemon>> getAllPokemons(){
         return repository.getAllPokemons();
     }
 

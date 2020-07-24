@@ -35,7 +35,20 @@ public class PokemonRvAdapter extends RecyclerView.Adapter<PokemonRvAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull PokemonRvAdapter.ViewHolder viewHolder, int position) {
+        TextView tv_pkmn_num = viewHolder.tv_pkmn_num;
+        TextView tv_pkmn_name = viewHolder.tv_pkmn_name;
+        TextView tv_pkmn_type1 = viewHolder.tv_pkmn_type1;
+        TextView tv_pkmn_type2 = viewHolder.tv_pkmn_type2;
+        ImageView iv_pkmn_icon = viewHolder.iv_pkmn_icon;
 
+
+        tv_pkmn_num.setText(pokemonList.get(position).getPkmnNum());
+        tv_pkmn_name.setText(pokemonList.get(position).getPkmnName());
+        tv_pkmn_type1.setText(pokemonList.get(position).getType1());
+        iv_pkmn_icon.setImageResource(R.drawable.pokeball);
+        if (pokemonList.get(position).getType2() != null){
+            tv_pkmn_type2.setText(pokemonList.get(position).getType2());
+        }
     }
 
     @Override
@@ -49,12 +62,16 @@ public class PokemonRvAdapter extends RecyclerView.Adapter<PokemonRvAdapter.View
         ImageView iv_pkmn_icon;
         TextView tv_pkmn_num;
         TextView tv_pkmn_name;
+        TextView tv_pkmn_type1;
+        TextView tv_pkmn_type2;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             iv_pkmn_icon = itemView.findViewById(R.id.iv_pkmn_icon);
             tv_pkmn_name = itemView.findViewById(R.id.tv_pkmn_name);
             tv_pkmn_num = itemView.findViewById(R.id.tv_pkmn_num);
+            tv_pkmn_type1 = itemView.findViewById(R.id.tv_pkmn_type1);
+            tv_pkmn_type2 = itemView.findViewById(R.id.tv_pkmn_type2);
         }
     }
 }
