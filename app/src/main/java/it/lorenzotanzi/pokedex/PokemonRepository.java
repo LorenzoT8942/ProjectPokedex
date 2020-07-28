@@ -1,42 +1,34 @@
 package it.lorenzotanzi.pokedex;
 
 import android.app.Application;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.ImageView;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
-
-import java.lang.reflect.Method;
-import java.lang.reflect.Type;
-import java.util.IdentityHashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.concurrent.TimeUnit;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.room.RoomDatabase;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import static it.lorenzotanzi.pokedex.R.*;
-import static it.lorenzotanzi.pokedex.R.integer.*;
 
 class PokemonRepository {
 
     private PokemonRoomDatabase db;
     private PokemonDao pokemonDao;
     private RequestQueue requestQueue;
+    private int checkDB;
     private LiveData<List<Pokemon>> allPokemons;
     private MutableLiveData<List<Pokemon>> searchResults = new MutableLiveData<>();
 
@@ -51,15 +43,13 @@ class PokemonRepository {
         requestQueue = Volley.newRequestQueue(application);
         requestQueue.start();
         Log.d("REPO", "Request Queue started");
-
         allPokemons = pokemonDao.getAllPokemons();
-        Log.d("REPO", "Pokemon list obtained");
+        Log.d("REPO", "Pokemon list obtained from DB");
+        initDatabase();
 
-        if (allPokemons == null) {
-            Log.d("REPO", "Pokemon list is empty, fetching data...");
-            searchAllPokemons();
-        }
-    }
+
+}
+
 
 
     //METHODS TO BE CALLED BY VIEW-MODEL
@@ -75,10 +65,18 @@ class PokemonRepository {
         new InsertPokemonAsyncTask(pokemonDao).execute(pokemon);
     }
 
+    void initDatabase(){
+        new checkDatabaseAT(pokemonDao).execute(requestQueue);
+    }
+
 //ASYNC TASKS RESPONSIBLE FOR QUERIES
 
     private void asyncFinished(List<Pokemon> pokemons) {
         searchResults.setValue(pokemons);
+    }
+
+    private void checkDbFinished(Integer result){
+        checkDB = result;
     }
 
     //QUERIES THE DB AND STORES THE RESULT IN searchResults
@@ -101,6 +99,79 @@ class PokemonRepository {
 //            delegate.asyncFinished(result);
 //        }
 //    }
+
+    //QUERIES THE DB TO CHECK IF IT EMPTY OR NOT
+    private static class checkDatabaseAT extends AsyncTask<RequestQueue, Void, /*List<Pokemon>*/Integer > {
+
+        private PokemonDao asyncTaskDao;
+        private PokemonRepository delegate;
+
+        public checkDatabaseAT(PokemonDao asyncTaskDao) {
+            this.asyncTaskDao = asyncTaskDao;
+        }
+
+//        @Override
+//        protected List<Pokemon> doInBackground(Void... string) {
+//            //return asyncTaskDao.checkDatabase();
+//        }
+
+        @Override
+        protected Integer doInBackground(RequestQueue... requestQueues) {
+            if (asyncTaskDao.checkDatabase().length < 1) {
+                for (int i = 1; i < 150; i++) {
+                    String Index = Integer.toString(i);
+                    String msg = "searching pokemon " + Index;
+                    String.format(msg, Index);
+                    Log.d("REPO", msg);
+
+                    Log.d("REPO", "searching pokemon by ID");
+                    String url = String.format("https://pokeapi.co/api/v2/pokemon/%s/", Integer.toString(i));
+                    Log.d("REPO", "ID: " + Integer.toString(i));
+
+                    Log.d("REPO", "API Request: " + url);
+
+                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    Gson gson = new Gson();
+                                    try {
+                                        Log.d("RESPONSE", "inserting response in DB");
+
+                                        String newPkmnId = response.getString("id");
+                                        String newPkmnName = response.getString("name");
+                                        JSONArray newPkmnTypes = response.getJSONArray("types");
+                                        JSONObject jsonType1 = newPkmnTypes.getJSONObject(0);
+                                        String sType1 = jsonType1.getString("type");
+                                        String sType2;
+                                        if (newPkmnTypes.isNull(1)) {
+                                            sType2 = null;
+                                        } else {
+                                            sType2 = newPkmnTypes.getJSONObject(1).getString("type");
+
+                                        }
+                                        Log.d("DEB", "Id: " + newPkmnId + "Name: " + newPkmnName + "Type 1" + sType1 + "Type 2: " + sType2);
+                                        Pokemon pokemon = new Pokemon(Integer.parseInt(newPkmnId), newPkmnName, sType1, sType2);
+                                        new InsertPokemonAsyncTask(asyncTaskDao).execute(pokemon);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+
+                                }
+                            });
+                    requestQueues[0].add(jsonObjectRequest);
+                }
+            }
+            return null;
+        }
+    }
+
+
 
 
             //INSERT A POKEMON RECORD IN THE DB
@@ -125,58 +196,5 @@ class PokemonRepository {
         //TO DO
     }
 
-    private void searchPokemonById (String id){
-        Log.d("REPO","searching pokemon by ID");
-        String url = String.format("https://pokeapi.co/api/v2/pokemon/%s/", id);
-        Log.d("REPO","ID: " + id);
-
-        Log.d("REPO", "API Request: " + url);
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Gson gson = new Gson();
-                        try {
-                            Log.d("RESPONSE", "inserting response in DB");
-
-                            String  newPkmnId = response.getString("id");
-                            String newPkmnName = response.getString("name");
-                            JSONArray newPkmnTypes = response.getJSONArray("types");
-                            String Type1 = newPkmnTypes.getString(0);
-                            String Type2;
-                            if (newPkmnTypes.isNull(1)){
-                                Type2 = null;
-                            } else {
-                                Type2 = newPkmnTypes.getString(1);
-                            }
-                            Log.d("DEB", "Id: "+newPkmnId + "Name: " + newPkmnName + "Type 1" + Type1 + "Type 2: " + Type2);
-                            Pokemon pokemon = new Pokemon(newPkmnId, newPkmnName, Type1, Type2);
-                            insert(pokemon);
-                        }catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                });
-
-        requestQueue.add(jsonObjectRequest);
-    }
-
-    private void searchAllPokemons(){
-        for (int i = 1; i < 10; i++) {
-            String Index = Integer.toString(i);
-            String msg = "searching pokemon " + Index;
-            String.format(msg, Index);
-            Log.d("REPO",msg);
-
-            searchPokemonById(Index);
-        }
-    }
 
 }

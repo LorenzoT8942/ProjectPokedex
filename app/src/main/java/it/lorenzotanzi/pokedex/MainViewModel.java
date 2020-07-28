@@ -21,7 +21,7 @@ public class MainViewModel extends AndroidViewModel {
 
     public MainViewModel(Application application) {
         super(application);
-        Log.d("VM", "CONTRUCTING VIEW MODEL CLASS");
+        Log.d("VM", "CONSTRUCTING VIEW MODEL CLASS");
         repository = new PokemonRepository(application);
         Log.d("VM", "repo obtained");
         allPokemons = repository.getAllPokemons();

@@ -20,4 +20,7 @@ public interface PokemonDao {
 
     @Query("SELECT * FROM Pokemon WHERE name LIKE ':name%'")
     List<Pokemon> findPokemon();
+
+    @Query("SELECT * FROM Pokemon LIMIT 1")
+    Pokemon[] checkDatabase();
 }

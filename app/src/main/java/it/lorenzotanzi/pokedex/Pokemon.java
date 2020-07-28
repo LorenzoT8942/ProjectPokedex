@@ -11,7 +11,7 @@ public class Pokemon {
     @PrimaryKey
     @NonNull
     @ColumnInfo(name = "ID")
-    private String pkmnNum;
+    private Integer pkmnNum;
 
     @ColumnInfo(name = "Name")
     private String pkmnName;
@@ -23,7 +23,7 @@ public class Pokemon {
     private String type2;
 
 
-    public Pokemon(@NonNull String pkmnNum, String pkmnName, String type1, String type2) {
+    public Pokemon(@NonNull Integer pkmnNum, String pkmnName, String type1, String type2) {
         this.pkmnNum = pkmnNum;
         this.pkmnName = pkmnName;
         this.type1 = type1;
@@ -31,11 +31,11 @@ public class Pokemon {
     }
 
     @NonNull
-    public String getPkmnNum() {
+    public Integer getPkmnNum() {
         return pkmnNum;
     }
 
-    public void setPkmnNum(@NonNull String pkmnNum) {
+    public void setPkmnNum(@NonNull Integer pkmnNum) {
         this.pkmnNum = pkmnNum;
     }
 

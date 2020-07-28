@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void initRecyclerView(){
-        Log.d("MAIN", "initializing recyler view");
+        Log.d("MAIN", "initializing recycler view");
         mRecyclerView = findViewById(R.id.rv_pkmn);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);

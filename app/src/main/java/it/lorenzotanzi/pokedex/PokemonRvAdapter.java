@@ -42,7 +42,7 @@ public class PokemonRvAdapter extends RecyclerView.Adapter<PokemonRvAdapter.View
         ImageView iv_pkmn_icon = viewHolder.iv_pkmn_icon;
 
 
-        tv_pkmn_num.setText(pokemonList.get(position).getPkmnNum());
+        tv_pkmn_num.setText(pokemonList.get(position).getPkmnNum().toString());
         tv_pkmn_name.setText(pokemonList.get(position).getPkmnName());
         tv_pkmn_type1.setText(pokemonList.get(position).getType1());
         iv_pkmn_icon.setImageResource(R.drawable.pokeball);
