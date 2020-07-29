@@ -142,12 +142,12 @@ class PokemonRepository {
                                         String newPkmnName = response.getString("name");
                                         JSONArray newPkmnTypes = response.getJSONArray("types");
                                         JSONObject jsonType1 = newPkmnTypes.getJSONObject(0);
-                                        String sType1 = jsonType1.getString("type");
+                                        String sType1 = jsonType1.getJSONObject("type").getString("name");
                                         String sType2;
                                         if (newPkmnTypes.isNull(1)) {
                                             sType2 = null;
                                         } else {
-                                            sType2 = newPkmnTypes.getJSONObject(1).getString("type");
+                                            sType2 = newPkmnTypes.getJSONObject(1).getJSONObject("type").getString("name");
 
                                         }
                                         Log.d("DEB", "Id: " + newPkmnId + "Name: " + newPkmnName + "Type 1" + sType1 + "Type 2: " + sType2);
