@@ -3,12 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:backgroundTint="@color/cardview_dark_background"
+    app:cardCornerRadius="20dp"
+
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp"
         >
 
         <ImageView
@@ -27,18 +29,22 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@+id/iv_pkmn_icon"
             app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="10dp"
             android:layout_marginStart="16dp"
+            android:textColor="#ffff"
             android:text="#pkmn_num"
             />
 
         <TextView
             android:id="@+id/tv_pkmn_name"
+            android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@+id/tv_pkmn_num"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginStart="10dp"
-            android:text="pokemon name"
+            android:textColor="#ffff"
+            android:text="#pkmn_name"
             />
 
         <TextView
@@ -49,8 +55,10 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_pkmn_num"
             app:layout_constraintStart_toEndOf="@id/iv_pkmn_icon"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:layout_marginStart="16dp"
+            android:textColor="#ffff"
             />
 
         <TextView
@@ -61,8 +69,11 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_pkmn_num"
             app:layout_constraintLeft_toRightOf="@id/tv_pkmn_type1"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:layout_marginStart="16dp"
+            android:textColor="#ffff"
             />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

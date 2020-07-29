@@ -2,9 +2,11 @@ package it.lorenzotanzi.pokedex;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -41,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
         Log.d("MAIN", "initializing recycler view");
         mRecyclerView = findViewById(R.id.rv_pkmn);
         mLayoutManager = new LinearLayoutManager(this);
+        DividerItemDecoration itemDecorator = (new DividerItemDecoration(MainActivity.this, DividerItemDecoration.VERTICAL));
+        itemDecorator.setDrawable(ContextCompat.getDrawable(MainActivity.this, R.drawable.rv_divider));
+        mRecyclerView.addItemDecoration(itemDecorator);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new PokemonRvAdapter(R.layout.cardview_pokemon_detail);
         mRecyclerView.setAdapter(mAdapter);
@@ -50,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initObservers(){
-        Log.d("MAIN", "initializing obervers");
+        Log.d("MAIN", "initializing observers");
         mViewModel.getAllPokemons().observe(this, new Observer<List<Pokemon>>() {
             @Override
             public void onChanged(List<Pokemon> pokemons) {
