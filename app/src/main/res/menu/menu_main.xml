@@ -3,11 +3,28 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/menu_home"
+        android:checkable="true"
+        android:enabled="true"
+        android:icon="@drawable/menu_home"
+        android:title="@string/menu_home"
+        android:visible="true"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/menu_about"
         android:checkable="true"
         android:enabled="true"
         android:icon="@android:drawable/ic_menu_info_details"
         android:title="@string/menu_about"
         android:visible="true"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_search"
+        android:checkable="true"
+        android:enabled="true"
+        android:icon="@drawable/ic_search_black_24dp"
+        android:title="@string/menu_search"
+        android:visible="true"
+        app:actionViewClass="android.widget.SearchView"
         app:showAsAction="always" />
 </menu>
