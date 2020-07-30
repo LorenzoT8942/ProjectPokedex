@@ -1,9 +1,6 @@
 package it.lorenzotanzi.pokedex;
 
 import java.util.List;
-
-import javax.xml.namespace.QName;
-
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;

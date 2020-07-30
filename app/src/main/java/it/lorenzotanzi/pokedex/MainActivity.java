@@ -37,8 +37,6 @@ public class MainActivity extends AppCompatActivity {
         initRecyclerView();
     }
 
-
-
     private void initRecyclerView(){
         Log.d("MAIN", "initializing recycler view");
         mRecyclerView = findViewById(R.id.rv_pkmn);

@@ -11,14 +11,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import java.util.List;
-import java.util.Timer;
-import java.util.concurrent.TimeUnit;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.room.RoomDatabase;
-import androidx.sqlite.db.SupportSQLiteDatabase;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -195,6 +189,4 @@ class PokemonRepository {
     private void imgCall(String url){
         //TO DO
     }
-
-
 }
