@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -62,5 +63,12 @@ public class MainActivity extends AppCompatActivity {
                 mAdapter.setPokemonList(pokemons);
             }
         });
+    }
+
+    /* --- test per l'icona about in menu --- */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 }
