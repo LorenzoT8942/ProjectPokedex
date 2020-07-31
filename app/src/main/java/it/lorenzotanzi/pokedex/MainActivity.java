@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         itemDecorator.setDrawable(ContextCompat.getDrawable(MainActivity.this, R.drawable.rv_divider));
         mRecyclerView.addItemDecoration(itemDecorator);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new PokemonRvAdapter(R.layout.cardview_pokemon_detail);
+        mAdapter = new PokemonRvAdapter(R.layout.cardview_pokemon_detail, MainActivity.this);
         mRecyclerView.setAdapter(mAdapter);
     }
 

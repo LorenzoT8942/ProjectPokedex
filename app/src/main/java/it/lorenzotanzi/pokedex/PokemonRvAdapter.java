@@ -1,5 +1,6 @@
 package it.lorenzotanzi.pokedex;
 
+import android.content.Context;
 import android.net.sip.SipSession;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,13 +13,18 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
 public class PokemonRvAdapter extends RecyclerView.Adapter<PokemonRvAdapter.ViewHolder> {
 
     private int pokemonItemLayout;
+    Context context;
     private List<Pokemon> pokemonList;
 
-    public PokemonRvAdapter (int layoutId){
+    public PokemonRvAdapter (int layoutId, Context context){
         pokemonItemLayout = layoutId;
+        this.context = context;
     }
 
     public void setPokemonList(List<Pokemon> pokemons){
@@ -41,11 +47,18 @@ public class PokemonRvAdapter extends RecyclerView.Adapter<PokemonRvAdapter.View
         TextView tv_pkmn_type2 = viewHolder.tv_pkmn_type2;
         ImageView iv_pkmn_icon = viewHolder.iv_pkmn_icon;
 
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.placeholder(R.drawable.pokeball);
+        requestOptions.error(R.drawable.pokeball);
 
+        Glide.with(context)
+                .setDefaultRequestOptions(requestOptions)
+                .asBitmap()
+                .load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" + (position+1) + ".png")
+                .into(viewHolder.iv_pkmn_icon);
         tv_pkmn_num.setText(pokemonList.get(position).getPkmnNum().toString());
         tv_pkmn_name.setText(pokemonList.get(position).getPkmnName());
         tv_pkmn_type1.setText(pokemonList.get(position).getType1());
-        iv_pkmn_icon.setImageResource(R.drawable.pokeball);
         if (pokemonList.get(position).getType2() != null){
             tv_pkmn_type2.setText(pokemonList.get(position).getType2());
         }else{

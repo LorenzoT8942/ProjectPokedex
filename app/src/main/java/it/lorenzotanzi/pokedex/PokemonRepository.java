@@ -19,10 +19,8 @@ import org.json.JSONObject;
 
 class PokemonRepository {
 
-    private PokemonRoomDatabase db;
     private PokemonDao pokemonDao;
     private RequestQueue requestQueue;
-    private int checkDB;
     private LiveData<List<Pokemon>> allPokemons;
     private MutableLiveData<List<Pokemon>> searchResults = new MutableLiveData<>();
 
@@ -30,7 +28,7 @@ class PokemonRepository {
     //CONSTRUCTOR
     PokemonRepository(Application application) {
         Log.d("REPO", "CONSTRUCTING REPOSITORY");
-        db = PokemonRoomDatabase.getDatabase(application);
+        PokemonRoomDatabase db = PokemonRoomDatabase.getDatabase(application);
         Log.d("REPO", " DB obtained");
         pokemonDao = db.pokemonDao();
         Log.d("REPO", "DAO obtained");
@@ -40,8 +38,6 @@ class PokemonRepository {
         allPokemons = pokemonDao.getAllPokemons();
         Log.d("REPO", "Pokemon list obtained from DB");
         initDatabase();
-
-
 }
 
 
@@ -70,7 +66,7 @@ class PokemonRepository {
     }
 
     private void checkDbFinished(Integer result){
-        checkDB = result;
+        int checkDB = result;
     }
 
     //QUERIES THE DB AND STORES THE RESULT IN searchResults
