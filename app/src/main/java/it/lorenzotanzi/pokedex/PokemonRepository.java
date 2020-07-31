@@ -11,24 +11,16 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import java.util.List;
-import java.util.Timer;
-import java.util.concurrent.TimeUnit;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.room.RoomDatabase;
-import androidx.sqlite.db.SupportSQLiteDatabase;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 class PokemonRepository {
 
-    private PokemonRoomDatabase db;
     private PokemonDao pokemonDao;
     private RequestQueue requestQueue;
-    private int checkDB;
     private LiveData<List<Pokemon>> allPokemons;
     private MutableLiveData<List<Pokemon>> searchResults = new MutableLiveData<>();
 
@@ -36,7 +28,7 @@ class PokemonRepository {
     //CONSTRUCTOR
     PokemonRepository(Application application) {
         Log.d("REPO", "CONSTRUCTING REPOSITORY");
-        db = PokemonRoomDatabase.getDatabase(application);
+        PokemonRoomDatabase db = PokemonRoomDatabase.getDatabase(application);
         Log.d("REPO", " DB obtained");
         pokemonDao = db.pokemonDao();
         Log.d("REPO", "DAO obtained");
@@ -46,8 +38,6 @@ class PokemonRepository {
         allPokemons = pokemonDao.getAllPokemons();
         Log.d("REPO", "Pokemon list obtained from DB");
         initDatabase();
-
-
 }
 
 
@@ -76,7 +66,7 @@ class PokemonRepository {
     }
 
     private void checkDbFinished(Integer result){
-        checkDB = result;
+        int checkDB = result;
     }
 
     //QUERIES THE DB AND STORES THE RESULT IN searchResults
