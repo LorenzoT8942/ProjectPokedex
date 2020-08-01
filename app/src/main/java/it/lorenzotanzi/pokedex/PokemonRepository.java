@@ -24,7 +24,6 @@ class PokemonRepository {
     private LiveData<List<Pokemon>> allPokemons;
     private MutableLiveData<List<Pokemon>> searchResults = new MutableLiveData<>();
 
-
     //CONSTRUCTOR
     PokemonRepository(Application application) {
         Log.d("REPO", "CONSTRUCTING REPOSITORY");
@@ -39,8 +38,6 @@ class PokemonRepository {
         Log.d("REPO", "Pokemon list obtained from DB");
         initDatabase();
 }
-
-
 
     //METHODS TO BE CALLED BY VIEW-MODEL
     LiveData<List<Pokemon>> getAllPokemons(){
@@ -100,11 +97,6 @@ class PokemonRepository {
             this.asyncTaskDao = asyncTaskDao;
         }
 
-//        @Override
-//        protected List<Pokemon> doInBackground(Void... string) {
-//            //return asyncTaskDao.checkDatabase();
-//        }
-
         @Override
         protected Integer doInBackground(RequestQueue... requestQueues) {
             if (asyncTaskDao.checkDatabase().length < 1) {
@@ -124,7 +116,6 @@ class PokemonRepository {
                             new Response.Listener<JSONObject>() {
                                 @Override
                                 public void onResponse(JSONObject response) {
-                                    Gson gson = new Gson();
                                     try {
                                         Log.d("RESPONSE", "inserting response in DB");
 
@@ -133,12 +124,13 @@ class PokemonRepository {
                                         JSONArray newPkmnTypes = response.getJSONArray("types");
                                         JSONObject jsonType1 = newPkmnTypes.getJSONObject(0);
                                         String sType1 = jsonType1.getJSONObject("type").getString("name");
+                                        sType1 = sType1.substring(0,1).toUpperCase() + sType1.substring(1);
                                         String sType2;
                                         if (newPkmnTypes.isNull(1)) {
                                             sType2 = null;
                                         } else {
                                             sType2 = newPkmnTypes.getJSONObject(1).getJSONObject("type").getString("name");
-
+                                            sType2 = sType2.substring(0,1).toUpperCase() + sType2.substring(1);
                                         }
                                         Log.d("DEB", "Id: " + newPkmnId + "Name: " + newPkmnName + "Type 1" + sType1 + "Type 2: " + sType2);
                                         Pokemon pokemon = new Pokemon(Integer.parseInt(newPkmnId), newPkmnName, sType1, sType2);
@@ -161,9 +153,6 @@ class PokemonRepository {
         }
     }
 
-
-
-
             //INSERT A POKEMON RECORD IN THE DB
     private static class InsertPokemonAsyncTask extends AsyncTask<Pokemon, Void, Void> {
 
@@ -182,7 +171,8 @@ class PokemonRepository {
         }
     }
 
-    private void imgCall(String url){
-        //TO DO
+    private String capitalize(String string){
+        String cap = string.substring(0, 1).toUpperCase() + string.substring(1);
+        return cap;
     }
 }

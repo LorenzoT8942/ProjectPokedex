@@ -12,7 +12,6 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
@@ -56,8 +55,19 @@ public class PokemonRvAdapter extends RecyclerView.Adapter<PokemonRvAdapter.View
                 .asBitmap()
                 .load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" + (position+1) + ".png")
                 .into(viewHolder.iv_pkmn_icon);
-        tv_pkmn_num.setText(pokemonList.get(position).getPkmnNum().toString());
-        tv_pkmn_name.setText(pokemonList.get(position).getPkmnName());
+        String idString = pokemonList.get(position).getPkmnNum().toString();
+        if (Integer.parseInt(idString) < 10){
+            idString = new StringBuilder().append("#00").append(idString).toString();
+        }else if (Integer.parseInt(idString) < 100){
+            idString = new StringBuilder().append("#0").append(idString).toString();
+        }else {
+            idString = new StringBuilder().append("#").append(idString).toString();
+        }
+        String pkmnNameString = pokemonList.get(position).getPkmnName();
+        pkmnNameString = pkmnNameString.substring(0,1).toUpperCase() + pkmnNameString.substring(1);
+
+        tv_pkmn_num.setText(idString);
+        tv_pkmn_name.setText(pkmnNameString);
         tv_pkmn_type1.setText(pokemonList.get(position).getType1());
         if (pokemonList.get(position).getType2() != null){
             tv_pkmn_type2.setText(pokemonList.get(position).getType2());
