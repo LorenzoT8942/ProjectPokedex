@@ -100,7 +100,7 @@ class PokemonRepository {
         @Override
         protected Integer doInBackground(RequestQueue... requestQueues) {
             if (asyncTaskDao.checkDatabase().length < 1) {
-                for (int i = 1; i < 150; i++) {
+                for (int i = 1; i < 700; i++) {
                     String Index = Integer.toString(i);
                     String msg = "searching pokemon " + Index;
                     String.format(msg, Index);
@@ -169,10 +169,5 @@ class PokemonRepository {
             asyncTaskDao.insertPokemon(params[0]);
             return null;
         }
-    }
-
-    private String capitalize(String string){
-        String cap = string.substring(0, 1).toUpperCase() + string.substring(1);
-        return cap;
     }
 }
