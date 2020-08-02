@@ -105,6 +105,9 @@ public class PokemonRvAdapter extends RecyclerView.Adapter<PokemonRvAdapter.View
         tv_pkmn_name.setText(pkmnNameString);
         tv_pkmn_type1.setText(type1str);
 
+        //SE IL POKEMON IN POSIZIONE position HA UN TIPO 2 ALLORA VIENE SETTATO IL TESTO DELLA TEXT VIEW
+        //tv_pkmn_type2 E VIENE CREATA UNA NUOVA ISTANZA DI GradientDrawable CHE VERRA' USATA COME
+        //BACKGROUND DELLA CARDVIEW
         if (type2str != null) {
             String type2col = colors.get(type2str);
             tv_pkmn_type2.setText(type2str);
@@ -116,6 +119,8 @@ public class PokemonRvAdapter extends RecyclerView.Adapter<PokemonRvAdapter.View
              gd.setCornerRadius(30);
              cardView.setBackground(gd);
         } else {
+            /*SE INVECE IL POKEMON HA UN SOLO TIPO VIENE SETTATO IL TESTO DELLA TEXT VIEW tv_pkmn_type2 A UNA STRINGA VUOTA
+            * E VIENE SETTATO LO SFONDO DELLA CARD VIEW AL COLORE DELL'UNICO TIPO RELATIVO AL POKEMON*/
             tv_pkmn_type2.setText("");
             Log.d("ADAPTER", "COLORS:" + type1str + type1col + ", " + type2str + "null");
             viewHolder.tv_pkmn_type2.setVisibility(View.GONE);

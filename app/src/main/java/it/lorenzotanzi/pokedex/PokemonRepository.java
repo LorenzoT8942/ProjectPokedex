@@ -9,7 +9,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
 import java.util.List;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -18,13 +17,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 class PokemonRepository {
+    /* LA CLASSE REPOSITORY HA LA RESPONSABILITA' DI RACCOGLIERE DATI DA WEB SERVICES (ATTRAVERSO API, ETC...)
+    E DA DATABASE E PUO' QUINDI COMUNICARE ESCLUSIVAMENTE CON IL ROOM DATABASE E LA CLASSE VIEW MODEL ALLA QUALE
+    VERRANNO PASSATI I DATI OTTENUTI.  */
 
     private PokemonDao pokemonDao;
     private RequestQueue requestQueue;
     private LiveData<List<Pokemon>> allPokemons;
     private MutableLiveData<List<Pokemon>> searchResults = new MutableLiveData<>();
 
-    //CONSTRUCTOR
+    //CONSTRUCTOR:
     PokemonRepository(Application application) {
         Log.d("REPO", "CONSTRUCTING REPOSITORY");
         PokemonRoomDatabase db = PokemonRoomDatabase.getDatabase(application);
@@ -39,19 +41,26 @@ class PokemonRepository {
         initDatabase();
 }
 
-    //METHODS TO BE CALLED BY VIEW-MODEL
+    //METODO NECESSARIO ALLA CLASSE VIEW MODEL PER OTTENERE LA LISTA POKEMON
     LiveData<List<Pokemon>> getAllPokemons(){
         return allPokemons;
     }
+
+
+    //METODO NECESSARIO ALLA CLASSE VIEW MODEL PER OTTENERE LA LISTA POKEMON OTTENUTI
+    //ATTRAVERSO RICERCA
 
     MutableLiveData<List<Pokemon>> getSearchResults(){
         return searchResults;
     }
 
+    /*METODO CHE PRENDE IN INPUT UN'ISTANZA DELLA CLASSE POKEMON. NECESSARIA PER INSERIRE
+    * UN NUOVO POKEMON NEL DATABASE TRAMITE ASYNC TASK E QUINDI IN MODO ASINCRONO RISPETTO AL MAIN THREAD*/
     void insert(Pokemon pokemon) {
         new InsertPokemonAsyncTask(pokemonDao).execute(pokemon);
     }
 
+    /*  */
     void initDatabase(){
         new checkDatabaseAT(pokemonDao).execute(requestQueue);
     }
