@@ -42,9 +42,9 @@ public class MainActivity extends AppCompatActivity {
         Log.d("MAIN", "initializing recycler view");
         mRecyclerView = findViewById(R.id.rv_pkmn);
         mLayoutManager = new LinearLayoutManager(this);
-        DividerItemDecoration itemDecorator = (new DividerItemDecoration(MainActivity.this, DividerItemDecoration.VERTICAL));
-        itemDecorator.setDrawable(ContextCompat.getDrawable(MainActivity.this, R.drawable.rv_divider));
-        mRecyclerView.addItemDecoration(itemDecorator);
+//        DividerItemDecoration itemDecorator = (new DividerItemDecoration(MainActivity.this, DividerItemDecoration.VERTICAL));
+//        itemDecorator.setDrawable(ContextCompat.getDrawable(MainActivity.this, R.drawable.rv_divider));
+//        mRecyclerView.addItemDecoration(itemDecorator);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new PokemonRvAdapter(R.layout.cardview_pokemon_detail, MainActivity.this);
         mRecyclerView.setAdapter(mAdapter);
