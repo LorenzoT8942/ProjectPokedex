@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
-public class PokemonRvAdapter extends RecyclerView.Adapter<PokemonRvAdapter.ViewHolder> {
+public class PokemonRvAdapter extends RecyclerView.Adapter<PokemonRvAdapter.ViewHolder> { // PROBLEMA QUI
 
     private Map<String, String> colors = new HashMap<>();
     private int pokemonItemLayout;
@@ -103,7 +103,7 @@ public class PokemonRvAdapter extends RecyclerView.Adapter<PokemonRvAdapter.View
             String type2col = colors.get(type2str);
             tv_pkmn_type2.setText(type2str);
             viewHolder.tv_pkmn_type2.setVisibility(View.VISIBLE);
-             int[] gradientColors = {Color.parseColor((type1col)), Color.parseColor(type2col)};
+             int[] gradientColors = {Color.parseColor((type1col)), Color.parseColor(type2col)}; // PROBLEMA QUI
              Log.d("ADAPTER", "COLORS:" + type1str + type1col + ", " + type2str + type2col);
              GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, gradientColors);
              gd.setGradientType(GradientDrawable.LINEAR_GRADIENT);
