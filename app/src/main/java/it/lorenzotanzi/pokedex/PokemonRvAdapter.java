@@ -45,6 +45,7 @@ public class PokemonRvAdapter extends RecyclerView.Adapter<PokemonRvAdapter.View
         colors.put("Dark","#705746");
         colors.put("Steel","#B7B7CE");
         colors.put("Fairy","#D685AD");
+
     }
 
     public void setPokemonList(List<Pokemon> pokemons){
@@ -63,17 +64,16 @@ public class PokemonRvAdapter extends RecyclerView.Adapter<PokemonRvAdapter.View
     public void onBindViewHolder(@NonNull PokemonRvAdapter.ViewHolder viewHolder, int position) {
         TextView tv_pkmn_num = viewHolder.tv_pkmn_num;
         TextView tv_pkmn_name = viewHolder.tv_pkmn_name;
-        TextView tv_pkmn_type1 = viewHolder.tv_pkmn_type1;
-        TextView tv_pkmn_type2 = viewHolder.tv_pkmn_type2;
         ImageView iv_pkmn_icon = viewHolder.iv_pkmn_icon;
         View cardView = viewHolder.cardView;
+        ImageView iv_pkmn_type1 = viewHolder.iv_pkmn_type1;
+        ImageView iv_pkmn_type2 = viewHolder.iv_pkmn_type2;
 
         String idString = pokemonList.get(position).getPkmnNum().toString();
         String pkmnNameString = pokemonList.get(position).getPkmnName();
          String type1str = pokemonList.get(position).getType1();
          String type2str = pokemonList.get(position).getType2();
          String type1col = colors.get(type1str);
-
 
         //REQUEST .PNG OF THE POKEMON SPRITE TO SET
         RequestOptions requestOptions = new RequestOptions();
@@ -94,29 +94,41 @@ public class PokemonRvAdapter extends RecyclerView.Adapter<PokemonRvAdapter.View
         //BINDING OF POKEMON INFO AND CREATION OF GRADIENT BACKGROUND
         tv_pkmn_num.setText(idString);
         tv_pkmn_name.setText(pkmnNameString);
-        tv_pkmn_type1.setText(type1str);
+
+        String _type1str = type1str.substring(0,1).toLowerCase() + type1str.substring(1);
+        int id = context.getResources().getIdentifier(_type1str , "drawable", context.getPackageName());
+        iv_pkmn_type1.setImageResource(id);
+        Log.d("ADAPTER", "Pokemon " + idString + "drawable 1 id:" + Integer.toString(id));
+
+
+
 
         //SE IL POKEMON IN POSIZIONE position HA UN TIPO 2 ALLORA VIENE SETTATO IL TESTO DELLA TEXT VIEW
         //tv_pkmn_type2 E VIENE CREATA UNA NUOVA ISTANZA DI GradientDrawable CHE VERRA' USATA COME
-        //BACKGROUND DELLA CARDVIEW
-        if (type2str != null) {
-            String type2col = colors.get(type2str);
-            tv_pkmn_type2.setText(type2str);
-            viewHolder.tv_pkmn_type2.setVisibility(View.VISIBLE);
-             int[] gradientColors = {Color.parseColor((type1col)), Color.parseColor(type2col)}; // PROBLEMA QUI
-             Log.d("ADAPTER", "COLORS:" + type1str + type1col + ", " + type2str + type2col);
-             GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, gradientColors);
-             gd.setGradientType(GradientDrawable.LINEAR_GRADIENT);
-             gd.setCornerRadius(30);
-             cardView.setBackground(gd);
-        } else {
+        //BACKGROUND DELLA CARD VIEW
+
+        if (type2str == null) {
             /*SE INVECE IL POKEMON HA UN SOLO TIPO VIENE SETTATO IL TESTO DELLA TEXT VIEW tv_pkmn_type2 A UNA STRINGA VUOTA
-            * E VIENE SETTATO LO SFONDO DELLA CARD VIEW AL COLORE DELL'UNICO TIPO RELATIVO AL POKEMON*/
-            tv_pkmn_type2.setText("");
-            Log.d("ADAPTER", "COLORS:" + type1str + type1col + ", " + type2str + "null");
-            viewHolder.tv_pkmn_type2.setVisibility(View.GONE);
+             * E VIENE SETTATO LO SFONDO DELLA CARD VIEW AL COLORE DELL'UNICO TIPO RELATIVO AL POKEMON*/
+            Log.d("ADAPTER", "COLORS:" + type1str + " " + type1col + ", " + type2str + " null");
+            iv_pkmn_type2.setVisibility(View.INVISIBLE);
             int backgroundColor = Color.parseColor(type1col);
             cardView.setBackgroundColor(backgroundColor);
+
+        } else {
+            String type2col = colors.get(type2str);
+            iv_pkmn_type2.setVisibility(View.VISIBLE);
+
+            String _type2str = type2str.substring(0,1).toLowerCase() + type2str.substring(1);
+            int id2 = context.getResources().getIdentifier(_type2str , "drawable", context.getPackageName());
+            Log.d("ADAPTER", "Pokemon " + idString + "drawable 2 id:" + Integer.toString(id2));
+            int[] gradientColors = {Color.parseColor((type1col)), Color.parseColor(type2col)}; // PROBLEMA QUI
+            Log.d("ADAPTER", "Pokemon " + idString + " COLORS:" + type1str + " " +  type1col + ", " + type2str + " "+ type2col);
+            GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, gradientColors);
+            gd.setGradientType(GradientDrawable.LINEAR_GRADIENT);
+            gd.setCornerRadius(30);
+            cardView.setBackground(gd);
+            iv_pkmn_type2.setImageResource(id2);
         }
     }
 
@@ -131,18 +143,19 @@ public class PokemonRvAdapter extends RecyclerView.Adapter<PokemonRvAdapter.View
         ImageView iv_pkmn_icon;
         TextView tv_pkmn_num;
         TextView tv_pkmn_name;
-        TextView tv_pkmn_type1;
-        TextView tv_pkmn_type2;
+
         View cardView;
+        ImageView iv_pkmn_type1;
+        ImageView iv_pkmn_type2;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             iv_pkmn_icon = itemView.findViewById(R.id.iv_pkmn_icon);
             tv_pkmn_name = itemView.findViewById(R.id.tv_pkmn_name);
             tv_pkmn_num = itemView.findViewById(R.id.tv_pkmn_num);
-            tv_pkmn_type1 = itemView.findViewById(R.id.tv_pkmn_type1);
-            tv_pkmn_type2 = itemView.findViewById(R.id.tv_pkmn_type2);
             cardView = itemView.findViewById(R.id.cl_card);
+            iv_pkmn_type1 = itemView.findViewById(R.id.iv_pkmn_type1);
+            iv_pkmn_type2 = itemView.findViewById(R.id.iv_pkmn_type2);
         }
     }
 }

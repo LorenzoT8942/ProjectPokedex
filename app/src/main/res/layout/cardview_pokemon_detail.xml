@@ -55,33 +55,25 @@
             app:layout_constraintStart_toEndOf="@+id/tv_pkmn_num"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_pkmn_type1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:id="@+id/iv_pkmn_type1"
+            android:layout_width="63dp"
+            android:layout_height="24dp"
+            app:layout_constraintLeft_toRightOf="@id/iv_pkmn_icon"
+            app:layout_constraintTop_toBottomOf="@id/tv_pkmn_num"
             android:layout_marginStart="16dp"
             android:layout_marginTop="20dp"
-            android:fontFamily="sans-serif-medium"
-            android:text="type1"
-            android:textColor="#ffff"
-            android:textSize="14dp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@id/iv_pkmn_icon"
-            app:layout_constraintTop_toBottomOf="@+id/tv_pkmn_num" />
+            />
 
-        <TextView
-            android:id="@+id/tv_pkmn_type2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:id="@+id/iv_pkmn_type2"
+            android:layout_width="63dp"
+            android:layout_height="24dp"
+            app:layout_constraintLeft_toRightOf="@id/iv_pkmn_type1"
+            app:layout_constraintTop_toBottomOf="@id/tv_pkmn_num"
             android:layout_marginStart="16dp"
             android:layout_marginTop="20dp"
-            android:fontFamily="sans-serif-medium"
-            android:text="type2"
-            android:textColor="#ffff"
-            android:textSize="14dp"
-            android:textStyle="bold"
-            app:layout_constraintLeft_toRightOf="@id/tv_pkmn_type1"
-            app:layout_constraintTop_toBottomOf="@+id/tv_pkmn_num" />
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

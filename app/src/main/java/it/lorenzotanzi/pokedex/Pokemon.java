@@ -28,6 +28,7 @@ public class Pokemon {
         this.pkmnName = pkmnName;
         this.type1 = type1;
         this.type2 = type2;
+
     }
 
     @NonNull
