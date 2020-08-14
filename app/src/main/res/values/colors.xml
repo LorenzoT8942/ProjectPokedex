@@ -6,4 +6,5 @@
     <color name="fireType">#DD2C00</color>
     <color name = "newYellow">#f2f425</color>
     <color name = "favorYellow">#eef218</color>
+    <color name="pokedexColor">#ac2a21</color>
 </resources>
