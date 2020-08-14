@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cv_pokemon"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -12,16 +13,16 @@
         android:id="@+id/cl_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        >
+        android:background="@drawable/item_selector">
 
         <ImageView
             android:id="@+id/iv_pkmn_icon"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:layout_marginStart="10dp"
             android:contentDescription="@string/iv_pkmn_detail"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginStart="10dp"
 
             />
 
@@ -71,7 +72,7 @@
             android:id="@+id/tv_pkmn_type2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginLeft="24dp"
             android:layout_marginTop="20dp"
             android:fontFamily="sans-serif-medium"
             android:text="type2"
@@ -80,6 +81,17 @@
             android:textStyle="bold"
             app:layout_constraintLeft_toRightOf="@id/tv_pkmn_type1"
             app:layout_constraintTop_toBottomOf="@+id/tv_pkmn_num" />
+
+        <ImageView
+            android:id="@+id/iv_pkmn_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.936"
+            app:layout_constraintStart_toEndOf="@+id/iv_pkmn_icon"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.384" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

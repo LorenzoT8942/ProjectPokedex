@@ -1,7 +1,12 @@
 <resources>
     <string name="app_name">Pokedex</string>
     <string name="iv_pkmn_detail">pokemon</string>
-    <string name = "menu_about">about</string>
-    <string name = "menu_search">search</string>
-    <string name = "menu_home">home</string>
+    <string name = "menu_about">About</string>
+    <string name = "menu_search">Search</string>
+    <string name = "menu_favor">Favorite</string>
+    <string name = "menu_del_all">Free All</string>
+    <string name = "menu_all_fav">Add All to Favorite</string>
+    <string name = "mn_cont_favor">Add to Favorite</string>
+    <string name = "mn_cont_del_favor">Delete from Favorites</string>
+    <string name = "menu_home">Home</string>
 </resources>

@@ -57,7 +57,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
     
 
-    compile 'com.github.bumptech.glide:glide:4.3.0'
+    implementation 'com.github.bumptech.glide:glide:4.3.0'
 
 
 
