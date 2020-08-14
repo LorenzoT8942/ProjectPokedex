@@ -20,12 +20,5 @@
         android:scrollbarSize="5dp"
 
         >
-
-
-
-
     </androidx.recyclerview.widget.RecyclerView>
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
