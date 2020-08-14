@@ -52,12 +52,9 @@ public class PokemonRvAdapter extends RecyclerView.Adapter<PokemonRvAdapter.View
     PokemonRvAdapter(int layoutId, Context context){
         pokemonItemLayout = layoutId;
         this.context = context;
-
         mListener = (SelectMode) context;
-
         PokemonRoomDatabase db = PokemonRoomDatabase.getDatabase(this.context);
         pokemonDao = db.pokemonDao();
-
         // problema qui
         //pokeRepo = new PokemonRepository(); /* così chiamo la sua DAO (conviene chiamare un opportuno metodo che fa quel che deve fare)
         //                                     * probabile gestione di sincronizzazione*/
@@ -125,8 +122,8 @@ public class PokemonRvAdapter extends RecyclerView.Adapter<PokemonRvAdapter.View
 
         TextView tv_pkmn_num = viewHolder.tv_pkmn_num;
         TextView tv_pkmn_name = viewHolder.tv_pkmn_name;
-        TextView tv_pkmn_type1 = viewHolder.tv_pkmn_type1;
-        TextView tv_pkmn_type2 = viewHolder.tv_pkmn_type2;
+        ImageView iv_pkmn_type1 = viewHolder.iv_pkmn_type1;
+        ImageView iv_pkmn_type2 = viewHolder.iv_pkmn_type2;
         ImageView iv_pkmn_icon = viewHolder.iv_pkmn_icon;
         View cardView = viewHolder.cardView;
         ImageView iv_pkmn_status = viewHolder.iv_pkmn_status; // new add
@@ -183,13 +180,16 @@ public class PokemonRvAdapter extends RecyclerView.Adapter<PokemonRvAdapter.View
         //BINDING OF POKEMON INFO AND CREATION OF GRADIENT BACKGROUND
         tv_pkmn_num.setText(idString);
         tv_pkmn_name.setText(pkmnNameString);
-        tv_pkmn_type1.setText(type1str);
 
+        //SETTING IMAGE VIEW OF TYPE 1
+        String _type1str = type1str.substring(0,1).toLowerCase() + type1str.substring(1);
+        int id = context.getResources().getIdentifier(_type1str , "drawable", context.getPackageName());
+        iv_pkmn_type1.setImageResource(id);
+        Log.d("ADAPTER", "Pokemon " + idString + "drawable 1 id:" + Integer.toString(id));
 
-
-        if(!pokemonList.get(position).getFavorite()){
+        if(!pokemonList.get(position).getFavorite()) {
             iv_pkmn_status.setImageResource(R.drawable.ic_pkm_free);
-        }else{
+        } else{
             // forse si può levare
             if(!favorPkmnList.contains(pokemonList.get(position))){
                 if(!supportFavorPkmnList.contains(pokemonList.get(position))) {}
@@ -203,36 +203,25 @@ public class PokemonRvAdapter extends RecyclerView.Adapter<PokemonRvAdapter.View
         //BACKGROUND DELLA CARDVIEW -- /* STESSO APPROCCIO PER FavoritePokemonRvAdapter */
         if (type2str != null) {
             String type2col = colors.get(type2str);
-            tv_pkmn_type2.setText(type2str);
-            viewHolder.tv_pkmn_type2.setVisibility(View.VISIBLE);
-            // TEST
-            try{
-                Log.d("ADAPTER", "COLORS: " + " " + type1str + " " +type1col + " , " + type2str + " " + type2col); // TEST
-                int[] gradientColors = {Color.parseColor(type1col), Color.parseColor(type2col)}; // TEST
-                GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, gradientColors);
-                gd.setGradientType(GradientDrawable.LINEAR_GRADIENT);
-                gd.setCornerRadius(30);
-                cardView.setBackground(gd);
+            iv_pkmn_type2.setVisibility(View.VISIBLE);
 
-
-            }catch(NullPointerException ignored){
-
-            }
-
+            String _type2str = type2str.substring(0,1).toLowerCase() + type2str.substring(1);
+            int id2 = context.getResources().getIdentifier(_type2str , "drawable", context.getPackageName());
+            Log.d("ADAPTER", "Pokemon " + idString + "drawable 2 id:" + Integer.toString(id2));
+            int[] gradientColors = {Color.parseColor((type1col)), Color.parseColor(type2col)}; // PROBLEMA QUI
+            Log.d("ADAPTER", "Pokemon " + idString + " COLORS:" + type1str + " " +  type1col + ", " + type2str + " "+ type2col);
+            GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, gradientColors);
+            gd.setGradientType(GradientDrawable.LINEAR_GRADIENT);
+            gd.setCornerRadius(30);
+            cardView.setBackground(gd);
+            iv_pkmn_type2.setImageResource(id2);
 
         } else {
-            /*SE INVECE IL POKEMON HA UN SOLO TIPO VIENE SETTATO IL TESTO DELLA TEXT VIEW tv_pkmn_type2 A UNA STRINGA VUOTA
+            /*SE INVECE IL POKEMON HA UN SOLO TIPO VIENE SETTATA LA IMAGE VIEW iv_pkmn_type2 COME "INVISIBLE"
             * E VIENE SETTATO LO SFONDO DELLA CARD VIEW AL COLORE DELL'UNICO TIPO RELATIVO AL POKEMON*/
-            tv_pkmn_type2.setText("");
-            Log.d("ADAPTER", "COLORS: " + " " + type1str + " " + type1col + " , " + type2str + " null");
-            viewHolder.tv_pkmn_type2.setVisibility(View.GONE);
-            //TEST
-            try{
-                int backgroundColor = Color.parseColor(type1col); // PROBLEMA QUI
-                cardView.setBackgroundColor(backgroundColor);
-            }catch (NullPointerException ignored){
-
-            }
+            iv_pkmn_type2.setVisibility(View.INVISIBLE);
+            int backgroundColor = Color.parseColor(type1col);
+            cardView.setBackgroundColor(backgroundColor);
         }
         
 
@@ -304,8 +293,8 @@ public class PokemonRvAdapter extends RecyclerView.Adapter<PokemonRvAdapter.View
         ImageView iv_pkmn_icon;
         TextView tv_pkmn_num;
         TextView tv_pkmn_name;
-        TextView tv_pkmn_type1;
-        TextView tv_pkmn_type2;
+        ImageView iv_pkmn_type1;
+        ImageView iv_pkmn_type2;
         View cardView;
         ImageView iv_pkmn_status; /* new add */
 
@@ -316,8 +305,8 @@ public class PokemonRvAdapter extends RecyclerView.Adapter<PokemonRvAdapter.View
             iv_pkmn_icon = itemView.findViewById(R.id.iv_pkmn_icon);
             tv_pkmn_name = itemView.findViewById(R.id.tv_pkmn_name);
             tv_pkmn_num = itemView.findViewById(R.id.tv_pkmn_num);
-            tv_pkmn_type1 = itemView.findViewById(R.id.tv_pkmn_type1);
-            tv_pkmn_type2 = itemView.findViewById(R.id.tv_pkmn_type2);
+            iv_pkmn_type1 = itemView.findViewById(R.id.iv_pkmn_type1);
+            iv_pkmn_type2 = itemView.findViewById(R.id.iv_pkmn_type2);
             cardView = itemView.findViewById(R.id.cl_card);
             iv_pkmn_status = itemView.findViewById(R.id.iv_pkmn_status); /* new add */
 

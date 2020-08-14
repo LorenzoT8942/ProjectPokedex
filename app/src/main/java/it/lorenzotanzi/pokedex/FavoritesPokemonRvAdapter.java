@@ -96,8 +96,8 @@ public class FavoritesPokemonRvAdapter extends RecyclerView.Adapter<ViewHolder> 
 
         TextView tv_pkmn_num = holder.itemView.findViewById(R.id.tv_pkmn_num);
         TextView tv_pkmn_name = holder.itemView.findViewById(R.id.tv_pkmn_name);
-        TextView tv_pkmn_type1 = holder.itemView.findViewById(R.id.tv_pkmn_type1);
-        TextView tv_pkmn_type2 = holder.itemView.findViewById(R.id.tv_pkmn_type2);
+        ImageView iv_pkmn_type1 = holder.itemView.findViewById(R.id.iv_pkmn_type1);
+        ImageView iv_pkmn_type2 = holder.itemView.findViewById(R.id.iv_pkmn_type2);
         final ImageView iv_pkmn_icon = holder.itemView.findViewById(R.id.iv_pkmn_icon); /* invece della richiesta con volley lo si preleva dalla entity */
         ImageView iv_pkmn_status = holder.itemView.findViewById(R.id.iv_pkmn_status);
         View cardView = holder.itemView.findViewById(R.id.cl_card);
@@ -130,7 +130,6 @@ public class FavoritesPokemonRvAdapter extends RecyclerView.Adapter<ViewHolder> 
         //BINDING OF POKEMON INFO AND CREATION OF GRADIENT BACKGROUND
         tv_pkmn_num.setText(idString);
         tv_pkmn_name.setText(pkmnNameString);
-        tv_pkmn_type1.setText(type1str);
 
 
 
@@ -139,31 +138,34 @@ public class FavoritesPokemonRvAdapter extends RecyclerView.Adapter<ViewHolder> 
         }else{
             iv_pkmn_status.setImageResource(R.drawable.ic_pkm_capt);
         }
+
+        String _type1str = type1str.substring(0,1).toLowerCase() + type1str.substring(1);
+        int id = context.getResources().getIdentifier(_type1str , "drawable", context.getPackageName());
+        iv_pkmn_type1.setImageResource(id);
+        Log.d("ADAPTER", "Pokemon " + idString + "drawable 1 id:" + Integer.toString(id));
             
         if (type2str != null) {
 
             String type2col = colors.get(type2str);
-            tv_pkmn_type2.setText(type2str);
-            holder.itemView.findViewById(R.id.tv_pkmn_type2).setVisibility(View.VISIBLE);
-            try {
-                int[] gradientColors = {Color.parseColor(type1col), Color.parseColor(type2col)}; // TEST
-                GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, gradientColors);
-                gd.setGradientType(GradientDrawable.LINEAR_GRADIENT);
-                gd.setCornerRadius(30);
-                cardView.setBackground(gd);
-            } catch (NullPointerException ignored) {}
+            iv_pkmn_type2.setVisibility(View.VISIBLE);
+
+            String _type2str = type2str.substring(0,1).toLowerCase() + type2str.substring(1);
+            int id2 = context.getResources().getIdentifier(_type2str , "drawable", context.getPackageName());
+            Log.d("ADAPTER", "Pokemon " + idString + "drawable 2 id:" + Integer.toString(id2));
+            int[] gradientColors = {Color.parseColor((type1col)), Color.parseColor(type2col)}; // PROBLEMA QUI
+            Log.d("ADAPTER", "Pokemon " + idString + " COLORS:" + type1str + " " +  type1col + ", " + type2str + " "+ type2col);
+            GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, gradientColors);
+            gd.setGradientType(GradientDrawable.LINEAR_GRADIENT);
+            gd.setCornerRadius(30);
+            cardView.setBackground(gd);
+            iv_pkmn_type2.setImageResource(id2);
 
         } else {
             /*SE INVECE IL POKEMON HA UN SOLO TIPO VIENE SETTATO IL TESTO DELLA TEXT VIEW tv_pkmn_type2 A UNA STRINGA VUOTA
              * E VIENE SETTATO LO SFONDO DELLA CARD VIEW AL COLORE DELL'UNICO TIPO RELATIVO AL POKEMON*/
-            tv_pkmn_type2.setText("");
-            Log.d("ADAPTER", "COLORS: " + " " + type1str + " " + type1col + " , " + type2str + " null");
-            holder.itemView.findViewById(R.id.tv_pkmn_type2).setVisibility(View.GONE);
-            //TEST
-            try{
-                int backgroundColor = Color.parseColor(type1col); // PROBLEMA QUI
-                cardView.setBackgroundColor(backgroundColor);
-            }catch (NullPointerException ignored){}
+            iv_pkmn_type2.setVisibility(View.INVISIBLE);
+            int backgroundColor = Color.parseColor(type1col);
+            cardView.setBackgroundColor(backgroundColor);
         }
 
         boolean isSelected = selectedList.get(position,false);
