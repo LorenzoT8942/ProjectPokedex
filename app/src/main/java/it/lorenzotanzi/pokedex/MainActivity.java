@@ -102,9 +102,9 @@ public class MainActivity extends AppCompatActivity implements SelectMode, Searc
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.menu_favor){
-            Intent intent = new Intent(getApplicationContext(), FavoritesPokemonActivity.class);
+            Intent intent = new Intent(MainActivity.this, FavoritesPokemonActivity.class);
             intent.putParcelableArrayListExtra("favorites", (ArrayList<? extends Parcelable>) mAdapter.chosenFavorites());
-            getApplicationContext().startActivity(intent);
+            startActivity(intent);
         }
 
         /* add also About Icon --> need to show app's rules and developers  */
